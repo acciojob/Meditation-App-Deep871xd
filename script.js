@@ -1,46 +1,54 @@
 //your JS code here. If required.
-//your JS code here. If required.
-document.addEventListener("DOMContentLoaded", function(event) {
-  var video = document.getElementById("video");
-  var audio = document.getElementById("audio");
-  var soundBtns = document.getElementsByClassName("sound-btn");
-  var timeSelect = document.getElementById("time-select");
-  var timeDisplay = document.querySelector(".time-display");
-  var playBtn = document.querySelector(".play");
-
-  // Function to switch between sound options
-  function switchSound(sound) {
-    audio.src = "Sounds/" + sound + ".mp3";
-    video.src = "Videos/" + sound + ".mp4";
-    video.play();
-    audio.play();
-  }
-
-  // Event listener for sound buttons
-  for (var i = 0; i < soundBtns.length; i++) {
-    soundBtns[i].addEventListener("click", function() {
-      var sound = this.getAttribute("data-sound");
-      for (var j = 0; j < soundBtns.length; j++) {
-        soundBtns[j].classList.remove("active");
-      }
-      this.classList.add("active");
-      switchSound(sound);
-    });
-  }
-
-  // Event listener for time buttons
-  timeSelect.addEventListener("click", function(event) {
-    if (event.target.tagName === "BUTTON") {
-      var time = event.target.id;
-      var mins = parseInt(time.split("-")[0]);
-      var seconds = 0;
-      if (mins > 0) {
-        seconds = mins * 60;
-      }
-      timeDisplay.textContent = padTime(mins) + ":" + padTime(seconds);
+document.addEventListener('DOMContentLoaded', function() {
+  var app = document.getElementById('app');
+  var video = document.getElementById('video');
+  var audio = document.getElementById('audio');
+  var sound1 = document.getElementById('sound1');
+  var sound2 = document.getElementById('sound2');
+  var smallerMins = document.getElementById('smaller-mins');
+  var mediumMins = document.getElementById('medium-mins');
+  var longMins = document.getElementById('long-mins');
+  var timeDisplay = document.querySelector('.time-display');
+  var playButton = document.querySelector('.play');
+  
+  sound1.addEventListener('click', function() {
+    audio.src = 'sounds/beach.mp3';
+    video.src = 'video/beach.mp4';
+  });
+  
+  sound2.addEventListener('click', function() {
+    audio.src = 'sounds/rain.mp3';
+    video.src = 'video/rain.mp4';
+  });
+  
+  smallerMins.addEventListener('click', function() {
+    setTime(2);
+  });
+  
+  mediumMins.addEventListener('click', function() {
+    setTime(5);
+  });
+  
+  longMins.addEventListener('click', function() {
+    setTime(10);
+  });
+  
+  playButton.addEventListener('click', function() {
+    if (video.paused) {
+      video.play();
+      audio.play();
+      playButton.style.backgroundImage = 'url(pause.png)';
+    } else {
+      video.pause();
+      audio.pause();
+      playButton.style.backgroundImage = 'url(play.png)';
     }
   });
-
-  // Function to pad time with leading zero if needed
-  function padTime(time) {
-    return (time < 10 ? "0" : "") + time
+  
+  function setTime(minutes) {
+    var seconds = minutes * 60;
+    var displayMinutes = Math.floor(seconds / 60);
+    var displaySeconds = seconds % 60;
+    timeDisplay.textContent = displayMinutes + ':' + (displaySeconds < 10 ? '0' : '') + displaySeconds;
+  }
+});
