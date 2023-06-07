@@ -1,77 +1,45 @@
 //your JS code here. If required.
-const app = document.getElementById('app');
-const videoContainer = document.querySelector('.vid-container');
-const video = document.getElementById('video');
-const audio = document.getElementById('audio');
-const soundButtons = document.querySelectorAll('.sound-picker button');
-const timeButtons = document.querySelectorAll('.time-select button');
-const timeDisplay = document.querySelector('.time-display');
-const playButton = document.querySelector('.play');
+document.addEventListener("DOMContentLoaded", function(event) {
+  var video = document.getElementById("video");
+  var audio = document.getElementById("audio");
+  var soundBtns = document.getElementsByClassName("sound-btn");
+  var timeSelect = document.getElementById("time-select");
+  var timeDisplay = document.querySelector(".time-display");
+  var playBtn = document.querySelector(".play");
 
-let currentTime = 10 * 60; // 10 minutes in seconds
-let isPlaying = false;
+  // Function to switch between sound options
+  function switchSound(sound) {
+    audio.src = "Sounds/" + sound + ".mp3";
+    video.src = "Videos/" + sound + ".mp4";
+    video.play();
+    audio.play();
+  }
 
-function updateTimer() {
-  const minutes = Math.floor(currentTime / 60);
-  const seconds = currentTime % 60;
-  timeDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-}
+  // Event listener for sound buttons
+  for (var i = 0; i < soundBtns.length; i++) {
+    soundBtns[i].addEventListener("click", function() {
+      var sound = this.getAttribute("data-sound");
+      for (var j = 0; j < soundBtns.length; j++) {
+        soundBtns[j].classList.remove("active");
+      }
+      this.classList.add("active");
+      switchSound(sound);
+    });
+  }
 
-function startTimer(duration) {
-  currentTime = duration * 60;
-  updateTimer();
-
-  const timer = setInterval(() => {
-    currentTime--;
-    updateTimer();
-
-    if (currentTime <= 0) {
-      clearInterval(timer);
-      pauseMeditation();
+  // Event listener for time buttons
+  timeSelect.addEventListener("click", function(event) {
+    if (event.target.tagName === "BUTTON") {
+      var time = event.target.id;
+      var mins = parseInt(time.split("-")[0]);
+      var seconds = 0;
+      if (mins > 0) {
+        seconds = mins * 60;
+      }
+      timeDisplay.textContent = padTime(mins) + ":" + padTime(seconds);
     }
-  }, 1000);
-}
+  });
 
-function pauseMeditation() {
-  isPlaying = false;
-  video.pause();
-  audio.pause();
-  playButton.textContent = 'Play';
-}
-
-function playMeditation() {
-  isPlaying = true;
-  video.play();
-  audio.play();
-  playButton.textContent = 'Pause';
-}
-
-soundButtons.forEach(button => {
-  button.addEventListener('click', () => {
-    const soundFile = button.id === 'sound1' ? 'beach.mp3' : 'rain.mp3';
-    audio.src = `sounds/${soundFile}`;
-	  audio.play();
-
-// Update the active button styling
-soundButtons.forEach(btn => btn.classList.remove('active'));
-button.classList.add('active');
-});
-});
-
-timeButtons.forEach(button => {
-button.addEventListener('click', () => {
-const time = button.id === 'smaller-mins' ? 2 : button.id === 'medium-mins' ? 5 : 10;
-startTimer(time);
-// Update the active button styling
-timeButtons.forEach(btn => btn.classList.remove('active'));
-button.classList.add('active');
-});
-});
-
-playButton.addEventListener('click', () => {
-if (isPlaying) {
-pauseMeditation();
-} else {
-playMeditation();
-}
-});
+  // Function to pad time with leading zero if needed
+  function padTime(time) {
+    return (time < 10 ? "0" : "") + time
