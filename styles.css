@@ -1,31 +1,40 @@
 /*  your css code here. If applicable */
+body {
+	background-color: #f5f5f5;
+	font-family: Arial, sans-serif;
+	text-align: center;
+}
+
+#app {
+	margin: 0 auto;
+	width: 80%;
+}
+
 .vid-container {
-  width: 100%;
-  height: auto;
-  position: relative;
+	background-color: #fff;
+	height: 400px;
+	margin-bottom: 20px;
 }
 
 .player-container {
-  display: none;
+	background-color: #fff;
+	padding: 20px;
 }
 
 .sound-picker {
-  margin-top: 10px;
-}
-
-.sound-btn {
-  margin-right: 10px;
-}
-
-.time-select {
-  margin-top: 10px;
+	margin-bottom: 20px;
 }
 
 .time-display {
-  font-size: 20px;
-  margin-top: 10px;
+	font-size: 48px;
+	font-weight: bold;
+	margin: 20px 0;
 }
 
 .play {
-  margin-top: 10px;
+	background-image: url('play.png');
+	background-size: cover;
+	border: none;
+	height: 64px;
+	width: 64px;
 }
